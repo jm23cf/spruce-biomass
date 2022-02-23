@@ -1,0 +1,55 @@
+should be 39 total
+
+added to RRR:
+6
+DD
+EE
+F
+FF
+
+
+done with py:
+7
+8
+9
+A
+AA
+B
+CC
+G
+H
+HH
+JJ
+KK
+N
+PP
+Q
+QQ
+
+RR
+S
+SS
+T
+TT
+U
+UU
+V
+VV
+W
+WW
+X
+XX
+Y
+YY
+Z
+ZZ
+
+need to do still:
+KK
+R
+
+
+py probs:
+- add or remove rings, when add, asked to enter ring value
+- add stats at the bottom, start with the gleiken...
+
