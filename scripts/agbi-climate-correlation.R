@@ -5,7 +5,7 @@ library(forcats)
 
 agbi.mean = readRDS('data/agbi.mean.RDS')
 # agbi.mean = readRDS('data/agbi.mean.big.RDS')
-##Test##
+
 #################################################################################################
 ## read in climate data
 #################################################################################################
@@ -67,7 +67,7 @@ for (i in 1:N_sites) {
 cor.tmean.melt = melt(cor.tmean, id.vars=c('site.id', 'site.num', 'lat', 'long'))
 cor.tmean.melt$variable = factor(cor.tmean.melt$variable, levels=c(paste0('P',seq(5, 12)), paste0('X',seq(1, 12))))
 
-write.csv(cor.tmean, 'Output/cor.dat.tmean.csv', row.names=FALSE)
+write.csv(cor.tmean, 'output/cor.dat.tmean.csv', row.names=FALSE)
 
 #################################################################################################
 ## read in ppt data
@@ -262,7 +262,7 @@ write.csv(cor.tmax, 'output/cor.dat.tmax.csv', row.names=FALSE)
 #################################################################################################
 ## plot correlation
 #################################################################################################
-
+#Can set dat to cor.tmean.melt, etc#
 dat = cor.tmean.melt
 dat$site.id = fct_reorder(dat$site.id, dat$lat)
 

@@ -7,7 +7,7 @@ library(reshape2)
 ####################################################################################
 
 # read rwl files
-fnames = list.files(path="Data/rwl/", pattern=".raw$")
+fnames = list.files(path="data/rwl/", pattern=".raw$")
 
 # lapply(fnames, function(x) fixup(paste0("DATA/rwl/", x)))
 
@@ -15,7 +15,7 @@ dat = list()
 for (i in 1:length(fnames)){
   fname = fnames[i]
   print(fname)
-  dat[[i]] = read.rwl(paste0("Data/rwl/", fname))
+  dat[[i]] = read.rwl(paste0("data/rwl/", fname))
 }
 
 # dat = lapply(fnames, function(x) read.rwl(paste0("alberta-transect/rwl/", x)))
@@ -43,7 +43,7 @@ ids$tree.orig = substr(rownames(ids), 4, 5)
 ## read and combine rw measurements
 ####################################################################################
 
-meta = read.csv('Data/tree_meta.csv')
+meta = read.csv('data/tree_meta.csv')
 meta = meta[which(meta$AD == "L"),]
 
 
@@ -96,7 +96,7 @@ dat.long$site.orig = ids[match(dat.long$variable, ids$tree), 'site.orig']
 dat.long$tree.orig = ids[match(dat.long$variable, ids$tree), 'tree.orig']
 colnames(dat.long) = c('year', 'tree', 'value', 'dbh', 'site.orig', 'tree.orig')
 
-site.meta = read.csv('Data/site_meta.csv', stringsAsFactors = FALSE)
+site.meta = read.csv('data/site_meta.csv', stringsAsFactors = FALSE)
 site.meta$site = site.meta$transect
 
 site.meta$site = ifelse(nchar(site.meta$site)==1, paste0('0', site.meta$site), site.meta$site)
@@ -105,4 +105,4 @@ dat.long$lat = site.meta[match(dat.long$site.orig, site.meta$site),'lat']
 dat.long$long = site.meta[match(dat.long$site.orig, site.meta$site),'long']
 dat.long$elev = site.meta[match(dat.long$site.orig, site.meta$site),'elev']
 
-saveRDS(dat.long, 'Data/dbh-reconstructed.RDS')
+saveRDS(dat.long, 'data/dbh-reconstructed.RDS')
