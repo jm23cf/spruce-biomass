@@ -263,9 +263,10 @@ write.csv(cor.tmax, 'output/cor.dat.tmax.csv', row.names=FALSE)
 ## plot correlation
 #################################################################################################
 #Can set dat to cor.tmean.melt, etc#
-dat = cor.tmean.melt
+dat = cor.tmax.melt
 dat$site.id = fct_reorder(dat$site.id, dat$lat)
 
+#tmax:P8 negative correlation, X4 more positive correlation
 ggplot(data=dat) + 
   geom_tile(aes(x=variable, y=site.id, fill=value)) +
   scale_fill_gradient2(low = muted("red"),
@@ -274,22 +275,26 @@ ggplot(data=dat) +
                        midpoint = 0,
                        space = "Lab",
                        na.value = "grey50")
-
+#
 ggplot(data=dat) +
   geom_point(aes(x=variable, y=value))
 
+#tmax: P8(N), P10(P), P11(N), X6(N)-odd cause X4&X5 are P, X10(P)
 ggplot(data=dat) +
   geom_boxplot(aes(x=variable, y=value)) +
   geom_hline(yintercept=0, linetype='dashed', col = 'red')
 
+#
 ggplot(data=dat) +
   geom_point(aes(x=lat, y=value, colour=variable))
 
+#tmax: X1 (upward trend with few outliers), 
 ggplot(data=dat) +
   geom_point(aes(x=lat, y=value)) +
   geom_smooth(aes(x=lat, y=value), method=lm) +
   facet_wrap(~variable)
 
+#tmax:P10 has some positive stuff
 ggplot(data=dat) +
   geom_histogram(aes(x=value)) + 
   facet_wrap(~variable)
