@@ -445,7 +445,10 @@ write.csv(cor.di.melt, 'output/cor.dat.di.csv', row.names=FALSE)
 #################################################################################################
 ## plot correlation
 #################################################################################################
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6ea5b0ee43082a8d9ba3179c937d4679b2e229ad
 #Can set dat to cor.tmean.melt, etc#
 dat = cor.tmax.melt
 dat$site.id = fct_reorder(dat$site.id, dat$lat)
