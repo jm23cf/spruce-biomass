@@ -66,8 +66,11 @@ write.csv(site.meta.cru, 'data/climateNA_input.csv', row.names = FALSE, quote=FA
 
 clim = read.csv('data/climateNA_1901-2019.csv', stringsAsFactors = FALSE)
 
-ppt = data.frame(site = clim[,c('ID1')], 
-                 year = clim[,'Year'], 
+
+
+
+ppt = data.frame(site = clim[,c('ID1')],
+                 year = clim[,'Year'],
                  clim[,which(substr(colnames(clim), 1, 3)=='PPT')])
 colnames(ppt) = c('site', 'year', seq(1, 12))
 ppt_m = melt(ppt, id.vars=c('site', 'year'))
@@ -75,8 +78,8 @@ colnames(ppt_m) = c('site', 'year', 'month', 'ppt')
 ppt_m = ppt_m[, c('month', 'site', 'year', 'ppt')]
 write.csv(ppt_m, 'Data/ppt_CRU.csv', row.names=FALSE)
 
-tmean = data.frame(site = clim[,c('ID1')], 
-                 year = clim[,'Year'], 
+tmean = data.frame(site = clim[,c('ID1')],
+                 year = clim[,'Year'],
                  clim[,which(substr(colnames(clim), 1, 3)=='Tav')])
 colnames(tmean) = c('site', 'year', seq(1, 12))
 tmean_m = melt(tmean, id.vars=c('site', 'year'))
@@ -84,8 +87,8 @@ colnames(tmean_m) = c('site', 'year', 'month', 'tmean')
 tmean_m = tmean_m[, c('month', 'site', 'year', 'tmean')]
 write.csv(tmean_m, 'Data/tmean_CRU.csv', row.names=FALSE)
 
-tmin = data.frame(site = clim[,c('ID1')], 
-                   year = clim[,'Year'], 
+tmin = data.frame(site = clim[,c('ID1')],
+                   year = clim[,'Year'],
                    clim[,which(substr(colnames(clim), 1, 3)=='Tmi')])
 colnames(tmin) = c('site', 'year', seq(1, 12))
 tmin_m = melt(tmin, id.vars=c('site', 'year'))
@@ -93,8 +96,8 @@ colnames(tmin_m) = c('site', 'year', 'month', 'tmin')
 tmin_m = tmin_m[, c('month', 'site', 'year', 'tmin')]
 write.csv(tmin_m, 'Data/tmin_CRU.csv', row.names=FALSE)
 
-tmax = data.frame(site = clim[,c('ID1')], 
-                   year = clim[,'Year'], 
+tmax = data.frame(site = clim[,c('ID1')],
+                   year = clim[,'Year'],
                    clim[,which(substr(colnames(clim), 1, 3)=='Tma')])
 colnames(tmax) = c('site', 'year', seq(1, 12))
 tmax_m = melt(tmax, id.vars=c('site', 'year'))

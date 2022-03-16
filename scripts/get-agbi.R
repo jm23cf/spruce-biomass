@@ -63,7 +63,7 @@ dat.agbi$size[which(dat.agbi$dbh<40)] = 'small'
 # so mean agbi for each site, for each year 
 # more useful than total agbi
 agbi.mean = dat.agbi %>% 
-  group_by(year, site.orig, lat , long) %>% 
+  group_by(year, site.orig, lat , long, elev) %>% 
   summarize(agbi.mean = mean(agbi, na.rm=TRUE), .groups='keep')
 
 # most sites don't go back very far
