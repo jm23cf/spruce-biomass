@@ -1,5 +1,7 @@
 library(dplR)
 library(reshape2)
+library(ggplot2)
+library(dplyr)
 
 # source('fixup.r')
 ####################################################################################
@@ -40,12 +42,48 @@ ids$site.orig = substr(rownames(ids), 1, 2)
 ids$tree.orig = substr(rownames(ids), 4, 5)
 
 ####################################################################################
-## read and combine rw measurements
+## read tree metadata and summarize
 ####################################################################################
 
 meta = read.csv('data/tree_meta.csv')
 meta = meta[which(meta$AD == "L"),]
 
+# for now skip tree 06L15
+meta = meta[which(!is.na(meta$dbh)),]
+
+ggplot() + 
+  geom_histogram(data=meta, aes(x=dbh, y=..density..))
+
+meta$size = NA
+meta$size[which(meta$dbh <= 10)] = 'small' 
+meta$size[which((meta$dbh > 10) & (meta$dbh <= 30))] = 'medium' 
+meta$size[which(meta$dbh > 30)] = 'large' 
+
+ggplot(data=meta) + 
+  geom_histogram(aes(x=dbh, y=..density..)) +
+  facet_grid(size~.)
+
+
+ggplot() + 
+  geom_histogram(data=meta, aes(x=dbh, y=..density.., fill=size), 
+                 alpha=0.5, breaks = seq(0,501, by=10)) +
+  theme_bw()
+
+
+ggplot() + 
+  geom_histogram(data=meta, aes(x=dbh, fill=size), 
+                 alpha=0.5, breaks = seq(0,501, by=10)) +
+  theme_bw() + 
+  xlab('DBH') +
+  ylab('Count') +
+  theme(text = element_text(size=12))
+ggsave('figures/dbh-histogram-all-trees.png')
+  
+table(meta$size)/nrow(meta)
+
+####################################################################################
+## reconstruct dbh
+####################################################################################
 
 sites = unique(ids$site.orig)
 
@@ -54,13 +92,20 @@ dat.long$dbh = NA
 # cores=c("A","B")
 for (site in sites){
   
+  print(site)
+  
   if (site %in% c("0N", "RR", "0S", "UU", "VV", "0W")){
     next
   }
-  
+  # 
   trees = unique(ids[which(ids$site.orig == site), "tree.orig"])
   trees = as.numeric(trees)
   for (tree in trees){
+    
+    if ((site=='06') & (tree==15)){
+      next
+    }
+    
     # tree_idx = which(tree_sub$tree == tree)
     DBH=meta[which((meta$TreeNum==tree)&(meta$Stand==site)),"dbh"]
     
@@ -88,7 +133,8 @@ for (site in sites){
       # print(DBH_prev)
     } 
     # }
-  }}
+  }
+}
 
 
 dat.long$site.orig = ids[match(dat.long$variable, ids$tree), 'site.orig'] 
@@ -105,4 +151,22 @@ dat.long$lat = site.meta[match(dat.long$site.orig, site.meta$site),'lat']
 dat.long$long = site.meta[match(dat.long$site.orig, site.meta$site),'long']
 dat.long$elev = site.meta[match(dat.long$site.orig, site.meta$site),'elev']
 
+dat.long$size = NA
+dat.long$size[which(dat.long$dbh <= 10)] = 'small' 
+dat.long$size[which((dat.long$dbh > 10) & (dat.long$dbh <= 30))] = 'medium' 
+dat.long$size[which(dat.long$dbh > 30)] = 'large' 
+
 saveRDS(dat.long, 'data/dbh-reconstructed.RDS')
+
+freq.size = dat.long %>% 
+  group_by(year, size) %>% 
+  summarise(n = n(), .groups='keep')
+
+ggplot() + 
+  geom_point(data=freq.size, aes(x=year, y=n, colour=size), 
+                 alpha=0.5) +
+  theme_bw() + 
+  xlab('DBH') +
+  ylab('Count') +
+  theme(text = element_text(size=12))
+ggsave('figures/dbh-histogram-all-trees.png')
