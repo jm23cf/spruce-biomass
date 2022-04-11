@@ -2,6 +2,8 @@ library(ggplot2)
 library(rgdal)
 # library(sf)
 library(broom)
+library(raster)
+library(rgeos)
 
 # read in data file
 dat = read.csv('data/site_meta.csv')
@@ -90,8 +92,10 @@ ggplot() +
   # scale_fill_brewer(type="qual", palette="Pastel1") + 
   # geom_path(data=eco_reproj, aes(x=long, y=lat, group = NA_L2NAME, fill = NA_L2NAME)) +
   # geom_path(data = eco_reproj, aes(x=long, y=lat, group=NA_L2NAME)) +
-  geom_path(data = regions_clipped, aes(long,lat, group = group), colour="gray22") +
-  geom_point(data=dat, aes(x=long, y=lat)) +
+  geom_path(data = regions_clipped, aes(long,lat, group = group)) +
+  geom_point(data=dat, aes(x=long, y=lat, size=elev, colour="black")) +
+  scale_colour_manual(values="black") +
+  # scale_shape_manual(values=c(24)) +
   # coord_equal(xlim = c(-123, -108),
   #             ylim = c(48, 60.5)) +
   # coord_map(xlim = c(-123, -108),
